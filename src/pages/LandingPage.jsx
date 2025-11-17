@@ -1,26 +1,16 @@
-import React from "react";  
+import React from "react";
 
-import Navbar from "./components/navbar";
-import Hero from "./components/hero";
-import Problem from "./components/problem";
-import Solution from "./components/solution";
-import Features from "./components/features";
-import HowItWorks from "./components/howitworks";
-import Screens from "./components/screen";
-import Benefits from "./components/benifits";
-import CTA from "./components/cta";
-import Footer from "./components/footer";
-import Trending from "./components/trending";
-import Mentorship from "./components/mentorship";
-import Internships from "./components/internships";
-import JoinCollege from "./components/joincollege";
-import Freshers from "./components/freshers";
-import Feedback from "./components/feedback";
-import Companies from "./components/companies";
-import About from "./components/about";
-import LandingPage from "./pages/LandingPage.jsx";
-import StudentSignUpPage from "./pages/StudentSignupPage.jsx";
-import StudentLoginPage from "./pages/StudentLoginPage.jsx";
+import Navbar from "../components/navbar.jsx";
+import Hero from "../components/hero.jsx";
+import Footer from "../components/footer.jsx";
+import Trending from "../components/trending.jsx";
+import Mentorship from "../components/mentorship.jsx";
+import Internships from "../components/internships.jsx";
+import JoinCollege from "../components/joincollege.jsx";
+import Freshers from "../components/freshers.jsx";
+import Feedback from "../components/feedback.jsx";
+import Companies from "../components/companies.jsx";
+import About from "../components/about.jsx";
 
 export default function App() {
   return (
@@ -33,12 +23,13 @@ export default function App() {
       <JoinCollege />
       <Freshers />
       <Feedback />
-    <Companies />
-    <About />
-    <Footer />
+      <Companies />
+      <About />
+      <Footer />
     </div>
   );
 }
+
 
 
 
