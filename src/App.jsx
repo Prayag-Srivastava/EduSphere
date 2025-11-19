@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage.jsx";
 import StudentSignUpPage from "./pages/StudentSignupPage.jsx";
 import StudentLoginPage from "./pages/StudentLoginPage.jsx";
+import StudentDashboard from "./pages/StudentDashboard.jsx";
 
 
 
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/studentsignup" element={<StudentSignUpPage />} />
         <Route path="/studentlogin" element={<StudentLoginPage />} />
+        <Route path="/studentdashboard" element={<StudentDashboard />} />
     </Routes>
     </div>
   );
