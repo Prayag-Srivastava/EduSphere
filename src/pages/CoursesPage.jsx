@@ -1,36 +1,9 @@
 // src/pages/CoursesPage.jsx
 import React, { useEffect, useState, useRef } from "react";
+import Navbar from "../components/studentdashboard/Navbar.jsx";
+import Sidebar from "../components/studentdashboard/sidebar.jsx";
 
-// --- MOCK COMPONENTS (Replace these with your actual imports) ---
-const Navbar = ({ onToggleSidebar }) => (
-  <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
-    <div className="flex items-center gap-4">
-      <button onClick={onToggleSidebar} className="lg:hidden text-gray-500 hover:text-gray-700">
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
-      </button>
-      <span className="text-xl font-bold text-gray-800">Student Dashboard</span>
-    </div>
-    <div className="flex items-center gap-4">
-      <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">AV</div>
-    </div>
-  </div>
-);
 
-const Sidebar = ({ open, onClose }) => (
-  <div className={`fixed inset-0 z-50 lg:hidden ${open ? "block" : "hidden"}`}>
-    <div className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onClick={onClose} />
-    <div className="absolute left-0 top-0 bottom-0 w-64 bg-white p-6 shadow-xl">
-      <h2 className="text-xl font-bold mb-6">Menu</h2>
-      <nav className="space-y-4">
-        <div className="text-gray-600 hover:text-blue-600 cursor-pointer">Dashboard</div>
-        <div className="text-gray-600 hover:text-blue-600 cursor-pointer">Internships</div>
-        <div className="text-blue-600 font-bold cursor-pointer">Courses</div>
-        <div className="text-gray-600 hover:text-blue-600 cursor-pointer">Profile</div>
-      </nav>
-    </div>
-  </div>
-);
-// ------------------------------------------------------------------
 
 /**
  * CoursesPage.jsx
@@ -753,7 +726,6 @@ export default function CoursesPage() {
                       ))}
                    </div>
                 </div>
-
 
 
              </div>
