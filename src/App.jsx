@@ -10,6 +10,7 @@ import ActivityTrackerPage from "./pages/StudentActivityTracker.jsx";
 import Internships from "../src/pages/InternshipsPage.jsx";
 import Courses from "../src/pages/CoursesPage.jsx";
 import Mentors from "../src/pages/MentorsPage.jsx";
+import Certificates from "../src/pages/Certificates.jsx";
 
 
 
@@ -17,6 +18,7 @@ import RoleSelectPage from "./pages/RoleSelectPage.jsx";
 import FacultyLoginPage from "./pages/FacultyLoginPage.jsx"; 
 import FacultySignupPage from "./pages/FacultySignupPage.jsx";
 import FacultyDashboard from "./pages/FacultyDashboard.jsx"; 
+import AcademicDashboard from "../src/pages/AcademicDashboard.jsx";
 
 export default function App() {
   return (
@@ -37,6 +39,9 @@ export default function App() {
         <Route path="/internships" element={<Internships />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/mentors" element={<Mentors />} />
+        <Route path="/academicdashboard" element={<AcademicDashboard />} />
+        <Route path="/certificates" element={<Certificates />} />
+
       </Routes>
     </div>
   );
