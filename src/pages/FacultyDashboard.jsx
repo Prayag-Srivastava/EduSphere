@@ -51,7 +51,7 @@ export default function FacultyDashboard() {
             setClassList={setClassList}
           />
 
-          <Footer />
+         
         </main>
       </div>
     </div>
