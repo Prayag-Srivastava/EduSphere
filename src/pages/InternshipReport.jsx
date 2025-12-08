@@ -38,6 +38,9 @@ function InternshipReport() {
         'No Report Generated. Click "Preview Report" above.'
     );
 
+    // LOADING STATE for the Print Button
+    const [isPdfLoading, setIsPdfLoading] = useState(false);
+
     const fromLocal = (key, fallback) => {
         const raw = window.localStorage.getItem(key);
         if (!raw) return fallback;
@@ -130,6 +133,7 @@ function InternshipReport() {
     const handleImageSave = (e) => {
         e.preventDefault();
         window.localStorage.setItem(LOCAL_KEYS.images, JSON.stringify(imgSettings));
+        alert("Image settings saved!");
     };
 
     const previewReport = async () => {
@@ -142,24 +146,65 @@ function InternshipReport() {
         }
     };
 
+    // --- NEW RELIABLE PRINT METHOD ---
+    // --- UPDATED PRINT FUNCTION ---
     const printReport = async () => {
+        setIsPdfLoading(true); // 1. Show "Generating..."
+        
         try {
-            const res = await fetch(`${API_BASE}/api/report/pdf`);
-            if (!res.ok) {
-                throw new Error(`PDF error ${res.status}`);
+            // 2. Fetch the HTML content
+            const res = await fetch(`${API_BASE}/api/report/html`);
+            if (!res.ok) throw new Error("Failed to fetch report");
+            const htmlContent = await res.text();
+
+            // 3. Remove any existing print frame from previous clicks
+            // This prevents memory leaks without killing the current print job too early
+            const oldIframe = document.getElementById("hidden-print-frame");
+            if (oldIframe) {
+                document.body.removeChild(oldIframe);
             }
-            const blob = await res.blob();
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "Internship_Report.pdf";
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
+
+            // 4. Create a new hidden iframe
+            const iframe = document.createElement("iframe");
+            iframe.id = "hidden-print-frame";
+            
+            // Move it off-screen (don't use display:none, or it won't print)
+            iframe.style.position = "fixed";
+            iframe.style.top = "-10000px";
+            iframe.style.left = "-10000px";
+            iframe.style.width = "1000px"; // Give it width so it renders correctly
+            iframe.style.height = "1000px";
+            
+            document.body.appendChild(iframe);
+
+            // 5. Write the HTML into the iframe
+            const doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write(htmlContent);
+            doc.close(); 
+
+            // 6. Wait for iframe to fully load images/styles, then Print
+            iframe.onload = () => {
+                setIsPdfLoading(false); // Stop "Generating..."
+                
+                // Small buffer to ensure rendering is complete
+                setTimeout(() => {
+                    try {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                        // NOTE: We do NOT remove the iframe here. 
+                        // It stays in the DOM so the "Save as PDF" process can finish.
+                        // It will be cleaned up the next time you click the button.
+                    } catch (e) {
+                        console.error("Print failed", e);
+                    }
+                }, 500);
+            };
+
         } catch (err) {
-            console.error("Error downloading PDF:", err);
-            alert("Failed to generate PDF. Please try again.");
+            console.error("Print error:", err);
+            alert("Could not load report for printing.");
+            setIsPdfLoading(false);
         }
     };
 
@@ -430,13 +475,21 @@ function InternshipReport() {
                             <button type="button" className="btn" onClick={previewReport}>
                                 Preview Report
                             </button>
+
+                            {/* PRINT BUTTON */}
                             <button
                                 type="button"
                                 className="btn-secondary"
                                 onClick={printReport}
+                                disabled={isPdfLoading}
+                                style={{
+                                    opacity: isPdfLoading ? 0.6 : 1,
+                                    cursor: isPdfLoading ? 'not-allowed' : 'pointer'
+                                }}
                             >
-                                Print / Save as PDF
+                                {isPdfLoading ? "Generating..." : "Print / Save as PDF"}
                             </button>
+
                             <button
                                 type="button"
                                 className="btn ir-download-btn"

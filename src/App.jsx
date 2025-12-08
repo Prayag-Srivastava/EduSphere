@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 // Adding .jsx extensions back to fix file resolution errors
 // Landing + Role Select
 import LandingPage from "./pages/LandingPage.jsx";
-import RoleSelectPage from "./pages/RoleSelectPage.jsx";
+import SkillGapApp from "./skillGap/SkillGapApp.jsx";
 
 // Student Pages
 import StudentSignUpPage from "./pages/StudentSignupPage.jsx";
@@ -22,6 +22,7 @@ import MentorLoginPage from "./pages/MentorLoginPage.jsx";
 import MentorSignupPage from "./pages/MentorSignupPage.jsx";
 import MentorDashboard from "./pages/MentorDashboard.jsx";
 import ProfilePage from "./pages/StudentProfile.jsx";
+import RoleSelectPage from "../src/pages/RoleSelectPage.jsx"
 
 
 
@@ -85,16 +86,21 @@ export default function App() {
         <Route path="/activitytracker" element={<ActivityTrackerPage />} />
         <Route path="/internships" element={<Internships />} />
         <Route path="/studentchat" element={<ChatStudent />} />
+        
+
+        {/* NEW: Skill Gap Analysis route */}
+        <Route path="/skill-gap" element={<SkillGapApp />} />
 
         {/* ---------------- FACULTY ROUTES ---------------- */}
         <Route path="/facultylogin" element={<FacultyLoginPage />} /> 
         <Route path="/facultysignup" element={<FacultySignupPage />} />
         <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
-<Route path="/internships" element={<Internships />} />
+        <Route path="/internships" element={<Internships />} />
+
         {/* ---------------- COMPANY ROUTES ---------------- */}
         <Route path="/companysignup" element={<CompanySignupPage />} />
         <Route path="/companylogin" element={<CompanyLoginPage />} /> 
-                <Route path="/courses" element={<Courses />} />
+        <Route path="/courses" element={<Courses />} />
         <Route path="/mentors" element={<Mentors />} />
         <Route path="/academicdashboard" element={<AcademicDashboard />} />
         <Route path="/certificates" element={<Certificates />} />
