@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   HomeIcon,
   UserGroupIcon,
@@ -9,16 +9,15 @@ import {
   ArrowRightCircleIcon,
   ChartBarIcon,
   DocumentArrowDownIcon,
-  XMarkIcon,
-  Bars3Icon,
+  ChatBubbleLeftIcon,
 } from "@heroicons/react/24/solid";
 import { 
   Cog6ToothIcon, 
   ArrowRightOnRectangleIcon 
 } from "@heroicons/react/24/outline";
 
-export default function Sidebar({ setActivePage, activePage = "overview" }) {
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+export default function Sidebar({ setActivePage, activePage = "overview", onNavigate }) {
+  // No local mobile state needed - parent handles sidebar visibility
 
   // ⭐ ALL ITEMS (NO UI CHANGES — only "Manage Partnerships" added)
   const menuGroups = [
@@ -46,8 +45,8 @@ export default function Sidebar({ setActivePage, activePage = "overview" }) {
       title: "Company",
       items: [
         { icon: BuildingOffice2Icon, label: "Partnerships", page: "partnerships" },
-        { icon: BuildingOffice2Icon, label: "Manage Partnerships", page: "managepartnerships" }, // ⭐ ADDED
         { icon: ArrowRightCircleIcon, label: "Admin Company", page: "admincompany" },
+        { icon: ChatBubbleLeftIcon, label: "Chat with Companies", page: "chats" },
       ]
     },
     {
@@ -61,7 +60,7 @@ export default function Sidebar({ setActivePage, activePage = "overview" }) {
 
   const handleNavigation = (page) => {
     setActivePage(page);
-    setIsMobileOpen(false);
+    if (onNavigate) onNavigate();
   };
 
   const SidebarContent = () => (
@@ -156,43 +155,5 @@ export default function Sidebar({ setActivePage, activePage = "overview" }) {
     </div>
   );
 
-  return (
-    <>
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-white rounded-lg shadow border"
-      >
-        <Bars3Icon className="w-6 h-6 text-gray-700" />
-      </button>
-
-      {isMobileOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={() => setIsMobileOpen(false)}
-        ></div>
-      )}
-
-      {/* Mobile Sidebar */}
-      <div
-        className={`lg:hidden fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform transition-transform duration-300 ${
-          isMobileOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <button
-          onClick={() => setIsMobileOpen(false)}
-          className="absolute top-4 right-4 p-2"
-        >
-          <XMarkIcon className="w-5 h-5 text-gray-600" />
-        </button>
-
-        <SidebarContent />
-      </div>
-
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block w-64 h-full border-r border-gray-200">
-        <SidebarContent />
-      </div>
-    </>
-  );
+  return <SidebarContent />;
 }

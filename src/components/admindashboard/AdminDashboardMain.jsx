@@ -14,10 +14,12 @@ import ForceAddStudent from "./pages/ForceAddStudent.jsx";
 import Partnerships from "./pages/Partnerships.jsx";
 import AdminCompany from "./pages/AdminCompany.jsx";
 import Analytics from "./pages/Analytics.jsx";
-import ExportData from "./pages/ExportData.jsx";   // ⭐ NEW IMPORT
+import ExportData from "./pages/ExportData.jsx";
+import Chats from "./pages/Chats.jsx";   // ⭐ NEW IMPORT
 
 export default function AdminDashboardMain() {
   const [activePage, setActivePage] = useState("overview");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // ⭐ GLOBAL FACULTY DATA
   const [facultyList, setFacultyList] = useState([
@@ -71,6 +73,9 @@ export default function AdminDashboardMain() {
       case "exportdata":                     // ⭐ NEW PAGE HANDLER
         return <ExportData />;
 
+      case "chats":                          // ⭐ NEW PAGE HANDLER
+        return <Chats />;
+
       default:
         return <OverviewUI />;
     }
@@ -79,16 +84,30 @@ export default function AdminDashboardMain() {
   return (
     <div className="flex h-screen bg-gray-100">
 
+      {/* SIDEBAR - Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <div className="w-64 fixed left-0 top-0 h-full bg-white shadow-xl z-20">
-        <Sidebar setActivePage={setActivePage} activePage={activePage} />
+      <div className={`fixed md:relative w-64 h-full bg-white shadow-xl z-40 md:z-10 transform transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        <Sidebar 
+          setActivePage={setActivePage} 
+          activePage={activePage}
+          onNavigate={() => setIsSidebarOpen(false)}
+        />
       </div>
 
       {/* MAIN AREA */}
-      <div className="flex flex-col flex-1 ml-64">
-        <Navbar />
+      <div className="flex flex-col flex-1 w-full">
+        <Navbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} isMobileMenuOpen={isSidebarOpen} />
 
-        <main className="p-6 overflow-y-auto flex-1">
+        <main className="p-4 md:p-6 overflow-y-auto flex-1">
           {renderContent()}
         </main>
 
