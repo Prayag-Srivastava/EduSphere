@@ -120,9 +120,6 @@ const AdminCompanyPanel = () => {
                 >
                   All Companies
                 </button>
-                <button className="px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all">
-                  Analytics
-                </button>
               </div>
             </div>
 

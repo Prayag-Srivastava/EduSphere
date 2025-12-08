@@ -1,4 +1,13 @@
+/**
+ * EXAMPLE: Updated AdminDashboardMain.jsx with Automation
+ * 
+ * This shows how to migrate from manual state to automatic data fetching
+ * 
+ * Copy this pattern to other components
+ */
+
 import React, { useState } from "react";
+import { useAppData } from "../context/AppDataContext";
 
 // Layout Components
 import Navbar from "./Navbar.jsx";
@@ -15,39 +24,64 @@ import Partnerships from "./pages/Partnerships.jsx";
 import AdminCompany from "./pages/AdminCompany.jsx";
 import Analytics from "./pages/Analytics.jsx";
 import ExportData from "./pages/ExportData.jsx";
-import Chats from "./pages/Chats.jsx";   // ⭐ NEW IMPORT
+import Chats from "./pages/Chats.jsx";
 
 export default function AdminDashboardMain() {
   const [activePage, setActivePage] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // ⭐ GLOBAL FACULTY DATA
-  const [facultyList, setFacultyList] = useState([
-    {
-      id: 1,
-      name: "Dr. Aditi Sharma",
-      email: "aditi@college.edu",
-      dept: "Computer Science",
+  // ⭐ AUTOMATIC DATA FETCHING - Replace manual state
+  const { 
+    faculty, 
+    facultyLoading,
+    fetchFaculty,
+    students,
+    companiesLoading
+  } = useAppData();
+
+  // ⭐ ADD FACULTY - Replaced with API mutation
+  const addFaculty = async (newFaculty) => {
+    try {
+      // Call API endpoint POST /api/faculty
+      const response = await fetch('http://localhost:3001/api/faculty', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newFaculty),
+      });
+      
+      if (response.ok) {
+        // Refresh faculty list after add
+        await fetchFaculty(true); // force refresh
+      }
+    } catch (error) {
+      console.error('Failed to add faculty:', error);
     }
-  ]);
-
-  // ⭐ ADD FACULTY
-  const addFaculty = (newFaculty) => {
-    setFacultyList((prev) => [...prev, newFaculty]);
   };
 
-  // ⭐ REMOVE FACULTY
-  const removeFaculty = (id) => {
-    setFacultyList((prev) => prev.filter((f) => f.id !== id));
+  // ⭐ REMOVE FACULTY - Replaced with API mutation
+  const removeFaculty = async (id) => {
+    try {
+      // Call API endpoint DELETE /api/faculty/:id
+      const response = await fetch(`http://localhost:3001/api/faculty/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        // Refresh faculty list after delete
+        await fetchFaculty(true); // force refresh
+      }
+    } catch (error) {
+      console.error('Failed to remove faculty:', error);
+    }
   };
 
-  // ⭐ PAGE SWITCH HANDLER
+  // PAGE SWITCH HANDLER - Same as before
   const renderContent = () => {
     switch (activePage) {
       case "managefaculty":
         return (
           <ManageFaculty
-            facultyList={facultyList}
+            facultyList={faculty}        // ⭐ Use context data
             removeFaculty={removeFaculty}
           />
         );
@@ -70,10 +104,10 @@ export default function AdminDashboardMain() {
       case "analytics":
         return <Analytics />;
 
-      case "exportdata":                     // ⭐ NEW PAGE HANDLER
+      case "exportdata":
         return <ExportData />;
 
-      case "chats":                          // ⭐ NEW PAGE HANDLER
+      case "chats":
         return <Chats />;
 
       default:
@@ -108,6 +142,7 @@ export default function AdminDashboardMain() {
         <Navbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} isMobileMenuOpen={isSidebarOpen} />
 
         <main className="p-4 md:p-6 overflow-y-auto flex-1">
+          {facultyLoading && activePage === 'managefaculty' && <div>Loading faculty...</div>}
           {renderContent()}
         </main>
 
@@ -117,3 +152,19 @@ export default function AdminDashboardMain() {
     </div>
   );
 }
+
+/**
+ * MIGRATION CHECKLIST:
+ * ==================
+ * 
+ * [ ] Create .env file with VITE_API_BASE_URL
+ * [ ] Install files: apiClient.js, useData.js, AppDataContext.jsx
+ * [ ] Update main.jsx with AppDataProvider
+ * [ ] Replace useState with useAppData hook
+ * [ ] Update addFaculty to call API
+ * [ ] Update removeFaculty to call API
+ * [ ] Test data fetching in browser console
+ * [ ] Update other components (ManageStudents, AdminCompany, etc.)
+ * [ ] Setup backend endpoints
+ * [ ] Test authentication flow
+ */

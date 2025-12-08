@@ -4,21 +4,15 @@ export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    // Always default to light unless user explicitly chose dark
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme === "dark" ? "dark" : "light";
+    // Always default to light - no dark mode
+    localStorage.setItem("theme", "light");
+    return "light";
   });
 
   useEffect(() => {
-    // Apply theme to document
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    
-    // Save to localStorage
-    localStorage.setItem("theme", theme);
+    // Always remove dark mode class
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
   }, [theme]);
 
   const toggleTheme = () => {
