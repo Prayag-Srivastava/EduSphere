@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { CalendarDaysIcon, CheckCircleIcon, XCircleIcon, ClockIcon, UserIcon } from '@heroicons/react/24/solid';
 import { getBookings, confirmBooking as confirmBookingAPI, cancelBooking as cancelBookingAPI } from './apiService';
 
+// Utility function to format date
+function formatDate(dateString) {
+    try {
+        const date = new Date(dateString);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    } catch (error) {
+        return dateString; // Fallback to original string if parsing fails
+    }
+}
+
 export default function BookingCalendar() {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);

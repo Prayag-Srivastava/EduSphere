@@ -20,6 +20,7 @@ import MentorLoginPage from "./pages/MentorLoginPage.jsx";
 import MentorSignupPage from "./pages/MentorSignupPage.jsx";
 import MentorDashboard from "./pages/MentorDashboard.jsx";
 import ProfilePage from "./pages/StudentProfile.jsx";
+import StudentChat from "../src/components/studentdashboard/StudentChat.jsx"
 
 
 import FacultyLoginPage from "./pages/FacultyLoginPage.jsx";
@@ -40,6 +41,8 @@ import AdminLoginPage from "./pages/AdminLoginPage.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";   // ✅ Correct Path
 
 import Gov from "../src/pages/GovPortal.jsx"
+
+import Publisher from "../src/pages/PublisherDashboard.jsx"
 
 export default function App() {
   return (
@@ -84,6 +87,9 @@ export default function App() {
         {/* NEW: Internship Report Generator */}
         <Route path="/internship-report" element={<InternshipReport />} />
         <Route path="/govportal" element={<Gov />} />
+
+        <Route path="/publisherdashboard" element={<Publisher />} />
+        <Route path="/studentchat" element={<StudentChat />} />
       </Routes>
     </div>
   );
