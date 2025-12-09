@@ -103,6 +103,12 @@ export default function App() {
         <Route path="/certificates" element={<Certificates />} />
         <Route path="/studentprofile" element={<ProfilePage />} />
 
+        //course publisher
+        <Route path="/publisherdashboard" element={<Publisher />} />
+
+        //gov portal
+        <Route path="/govportal" element={<Gov />} />
+
         {/* Skill Gap Analysis */}
         <Route path="/skill-gap" element={<SkillGapApp />} />
 
@@ -143,9 +149,9 @@ export default function App() {
           <Route path="chat" element={<Chat />} />
           <Route path="student/:id" element={<StudentProfile />} />
           <Route path="settings" element={<UnderMaintenance />} />
-          <Route path="/govportal" element={<Gov />} />
+          
           <Route path="help" element={<UnderMaintenance />} />
-          <Route path="/publisherdashboard" element={<Publisher />} />
+          
         </Route>
 
         {/* 404 - Catch all */}
